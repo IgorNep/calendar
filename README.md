@@ -105,29 +105,13 @@ so it is good if you have it :) )
 
 ## Available scripts
 
-```sh
-   npm run test (will run test by using Jest)
-   npm run dev (will run application in development mode without runing local server)
+```sh 
    npm run build (will run application in production mode without runing local server)
-   npm run start (will run application in development mode and run dev-server)
-   npm run style (will check styleguide in scss files and fix it automatically)
-   npm run prettier (will format your code style by orienting on style guide and rules you have been noticed )
+   npm run start (will run application in development mode and run dev-server)  
    npm run deploy (will prebuild application in production mode and install on github pages)
 ```
 
-## Testing
 
-```text
-For our application we use TDD pricniple so you have ability to test this application before actually start it.
-For testing we use a tool named Jest.
-You could test application by typing next comand in terminal:
-```
-
-```sh
-npm run test
-```
-
-##
 
 <!-- CONTRIBUTING -->
 
