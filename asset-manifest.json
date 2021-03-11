@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/calendar/static/css/main.da408f23.chunk.css",
+    "main.js": "/calendar/static/js/main.f1ab8a8a.chunk.js",
+    "main.js.map": "/calendar/static/js/main.f1ab8a8a.chunk.js.map",
+    "runtime-main.js": "/calendar/static/js/runtime-main.3392080e.js",
+    "runtime-main.js.map": "/calendar/static/js/runtime-main.3392080e.js.map",
+    "static/js/2.7f5bed3b.chunk.js": "/calendar/static/js/2.7f5bed3b.chunk.js",
+    "static/js/2.7f5bed3b.chunk.js.map": "/calendar/static/js/2.7f5bed3b.chunk.js.map",
+    "index.html": "/calendar/index.html",
+    "static/css/main.da408f23.chunk.css.map": "/calendar/static/css/main.da408f23.chunk.css.map",
+    "static/js/2.7f5bed3b.chunk.js.LICENSE.txt": "/calendar/static/js/2.7f5bed3b.chunk.js.LICENSE.txt",
+    "static/media/index.scss": "/calendar/static/media/fontawesome-webfont.f691f37e.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3392080e.js",
+    "static/js/2.7f5bed3b.chunk.js",
+    "static/css/main.da408f23.chunk.css",
+    "static/js/main.f1ab8a8a.chunk.js"
+  ]
+}
