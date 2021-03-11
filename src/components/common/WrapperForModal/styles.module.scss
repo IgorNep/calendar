@@ -1,0 +1,21 @@
+@import 'assets/styles/colors.module.scss';
+
+.wrapper {
+  display: flex;
+  border-radius: 12px;
+  flex-direction: column;
+  background-color: $white;
+}
+
+.wrapperHeader {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  padding: 16px 24px 16px 40px;
+  justify-content: center;
+}
+
+.wrapperChildren {
+  overflow: auto;
+  padding: 0 16px 16px;
+}
