@@ -106,7 +106,7 @@ so it is good if you have it :) )
 ## Available scripts
 
 ```sh 
-   npm run build (will run application in production mode without runing local server)
+   npm run build (will build folder ready for deploy)
    npm run start (will run application in development mode and run dev-server)  
    npm run deploy (will prebuild application in production mode and install on github pages)
 ```
