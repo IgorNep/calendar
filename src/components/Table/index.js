@@ -66,7 +66,7 @@ const Table = ({
 
               return (
                 <td
-                  key={item}
+                  key={Math.random() * 100}
                   data-id={`${day}${item.substr(0, 2)}`}
                   onDragOver={(e) => {
                     e.preventDefault();

@@ -10,6 +10,7 @@ import { AlertContext } from 'bus/alert/alertContext';
 
 const SignInContainer = () => {
   const [userInfo, setUserInfo] = useState('');
+  const [alert, setAlert] = useState('');
   const { getUsers, users, loading, error } = useContext(UsersContext);
   const { openModal, closeModal, isOpened, modalId } = useContext(ModalContext);
   const { isAuthenticated, authUser, setAsAdmin } = useContext(AuthContext);
@@ -29,7 +30,9 @@ const SignInContainer = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     if (userInfo.trim() === '') {
-      alert('Authorization is required');
+      // eslint-disable-next-line
+      setAlert('Authorization is required!');
+      setTimeout(() => setAlert(''), 1500);
       return;
     }
     const userFind = users.find((user) => user.name === userInfo);
@@ -46,19 +49,27 @@ const SignInContainer = () => {
       <Portal>
         <WrapperForModal title="Please Authorize">
           <form onSubmit={onSubmitHandler}>
-            <select
-              value={userInfo}
-              onChange={(e) => {
-                setUserInfo(e.target.value);
-              }}
-            >
-              <option value="">Choose Name</option>
-              {users.map((item) => (
-                <option key={item.id} value={item.name}>
-                  {item.name}
-                </option>
-              ))}
-            </select>
+            <div className="form-group pb-2 ">
+              <label htmlFor="userInfo">Authorize</label>
+              <select
+                className="form-control select "
+                name="userInfo"
+                id="userInfo"
+                value={userInfo}
+                onChange={(e) => {
+                  setUserInfo(e.target.value);
+                }}
+              >
+                <option value="">Choose Name</option>
+                {users.map((item) => (
+                  <option key={item.id} value={item.name}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+              {alert && <p className="text-danger p-0 m-0">{alert}</p>}
+            </div>
+
             <Button
               type="submit"
               title="Authorize"

@@ -17,13 +17,13 @@ const ConfirmModal = ({ event }) => {
   };
   return (
     <Portal>
-      <WrapperForModal>
-        <form>
-          <h4>
-            Are you sure you want to delete &quot;
+      <WrapperForModal title="Are you sure?">
+        <form onSubmit={submitHandler}>
+          <h5>
+            Delete &quot;
             {event.title}
             &quot; event?
-          </h4>
+          </h5>
           <div className={styles.buttonsGroup}>
             <Button
               title="Cancel"
@@ -31,12 +31,7 @@ const ConfirmModal = ({ event }) => {
               onClick={closeModal}
               className="btn btn-secondary"
             />
-            <Button
-              title="Yes"
-              type="submit"
-              onClick={submitHandler}
-              className="btn btn-primary"
-            />
+            <Button title="Yes" type="submit" className="btn btn-primary" />
           </div>
         </form>
       </WrapperForModal>
