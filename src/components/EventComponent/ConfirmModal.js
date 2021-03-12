@@ -19,11 +19,11 @@ const ConfirmModal = ({ event }) => {
     <Portal>
       <WrapperForModal>
         <form>
-          <h3>
+          <h4>
             Are you sure you want to delete &quot;
             {event.title}
             &quot; event?
-          </h3>
+          </h4>
           <div className={styles.buttonsGroup}>
             <Button
               title="Cancel"
