@@ -44,8 +44,8 @@ Simple meeting planning calendar for a meeting room in your office.
 This suoer simple app has been built with tools such as:
 
 - [JavaScript](https://developer.mozilla.org/uk/docs/Web/JavaScript)
-- [Bootstrap](https://materializecss.com/)
-- [React](https://materializecss.com/)
+- [Bootstrap](https://getbootstrap.com/)
+- [React](https://reactjs.org/)
 - [SCSS](https://sass-lang.com/)
 - [Axios](https://www.npmjs.com/package/axios)
 
