@@ -7,7 +7,7 @@
     <a href="https://github.com/IgorNep/timetable_test"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://igornep.github.io/timetable_test/">View Demo</a> 
+    <a href="https://igornep.github.io/calendar/">View Demo</a> 
   </p>
 </p>
 
