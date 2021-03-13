@@ -7,10 +7,14 @@
   padding: 0.5rem;
   width: 100%;
   border-radius: 7px;
-
-  i {
-    margin-left: 0.5rem;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.deleteBtn {
+  margin-left: 0.5rem;
+  color: red;
+  font-size: 1.5rem;
 }
 
 .buttonsGroup {

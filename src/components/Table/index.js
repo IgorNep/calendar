@@ -1,86 +1,104 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
+/* eslint-disable no-lone-blocks */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EventComponent from 'components/EventComponent';
 import { days, time } from 'utils/dataStore';
 import Loader from 'components/common/Loader';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import TableCell from './TableCell';
 
 const Table = ({
-  params: { events, updateEvent, loading, showAlert, filteredEvents },
+  params: {
+    events,
+    updateEvent,
+    loading,
+    filteredEvents,
+    isAdmin,
+    eventDeleteHandler,
+  },
 }) => {
-  const onDropHandler = (e) => {
-    const dropZone = e.target;
-    const id = e.dataTransfer.getData('text');
-    const draggableElement = document.getElementById(id);
-    if (dropZone.dataset.id === id) {
-      draggableElement.style.background = 'lightblue';
-      return;
-    }
-    const eventExists = events.find(
-      (item) => item.fieldId === dropZone.dataset.id,
-    );
-    if (eventExists) {
-      showAlert({
-        message: 'Failed to transfer! Timeslot already reserved!',
-        type: 'danger',
-      });
-      return;
-    }
-    if (dropZone.children.length > 0) {
-      showAlert({
-        message: 'Failed to transfer! Timeslot already reserved!',
-        type: 'danger',
-      });
-      draggableElement.style.background = 'lightblue';
-      return;
-    }
-    const findEl = events.find((item) => item.fieldId === id);
-    findEl.fieldId = dropZone.dataset.id;
-    updateEvent(findEl);
-  };
+  const [eventsData, setEventsData] = useState([]);
   const eventsToRender = filteredEvents || events;
+
+  useEffect(() => {
+    setEventsData(eventsToRender);
+  }, [events, filteredEvents]);
+
+  const dragHandler = (item, monitor, fieldId) => {
+    setEventsData((prevState) =>
+      prevState.map((event) => {
+        const findEvent = eventsData.find(
+          (eventItem) => eventItem.fieldId === item.fieldId,
+        );
+        if (findEvent) {
+          findEvent.fieldId = fieldId;
+        }
+        // eslint-disable-next-line no-unused-expressions
+        findEvent && updateEvent(findEvent);
+        return {
+          ...event,
+          event: event.fieldId === item.fieldId ? findEvent : event,
+        };
+      }),
+    );
+  };
   return loading ? (
     <Loader />
   ) : (
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          <th scope="col">Time</th>
-          {days.map((day) => (
-            <th scope="col" key={day}>
-              {day.substr(0, 3)}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {time.map((item) => (
-          <tr key={item}>
-            <th scope="row">{item}</th>
-            {days.map((day) => {
-              let eventMatch;
-              if (eventsToRender) {
-                eventMatch = eventsToRender.find(
-                  (i) => i.fieldId === `${day}${item.substr(0, 2)}`,
-                );
-              }
-
-              return (
-                <td
-                  key={Math.random() * 100}
-                  data-id={`${day}${item.substr(0, 2)}`}
-                  onDragOver={(e) => {
-                    e.preventDefault();
-                  }}
-                  onDrop={(e) => onDropHandler(e)}
-                >
-                  {eventMatch && <EventComponent event={eventMatch} />}
-                </td>
-              );
-            })}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    eventsData && (
+      <DndProvider backend={HTML5Backend}>
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Time</th>
+              {days.map((day) => (
+                <th scope="col" key={day}>
+                  {day.substr(0, 3)}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {time.map((hour) => (
+              <tr key={hour}>
+                <td>{hour}</td>
+                {days.map((dayItem) => (
+                  <TableCell
+                    key={Math.random() * 100}
+                    fieldId={`${dayItem}${hour.substring(0, 2)}`}
+                    dragHandler={dragHandler}
+                    events={eventsData}
+                    globalEvents={events}
+                    isAdmin={isAdmin}
+                    onAlertHandler={(message) => console.log(message)}
+                  >
+                    {eventsData.map((event) => {
+                      if (
+                        event.fieldId === `${dayItem}${hour.substring(0, 2)}`
+                      ) {
+                        return (
+                          <EventComponent
+                            event={event}
+                            key={event.fieldId}
+                            isAdmin={isAdmin}
+                            eventDeleteHandler={eventDeleteHandler}
+                          />
+                        );
+                      }
+                      return null;
+                    })}
+                  </TableCell>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </DndProvider>
+    )
   );
 };
 

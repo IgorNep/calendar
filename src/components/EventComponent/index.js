@@ -1,47 +1,45 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable operator-linebreak */
 /* eslint-disable react/prop-types */
-import { AuthContext } from 'bus/auth/authContext';
-import { ModalContext } from 'bus/Modal/modalContext';
-import React, { useContext } from 'react';
-import ConfirmModal from './ConfirmModal';
+import React from 'react';
+import { useDrag } from 'react-dnd';
+import { EVENT } from 'utils/helpers/types';
 import styles from './styles.module.scss';
 
-const EventComponent = ({ event }) => {
-  const { title, fieldId } = event;
-  const { isOpened, openModal, modalId } = useContext(ModalContext);
-  const { isAdmin } = useContext(AuthContext);
-  const onDeleteClick = () => {
-    openModal(event.id);
-  };
-  const dragStartHandler = (e) => {
-    e.dataTransfer.setData('text/plain', e.target.id);
-    e.currentTarget.style.backgroundColor = 'yellow';
-    e.currentTarget.style.color = 'black';
-  };
+const EventComponent = ({ event, isAdmin, eventDeleteHandler }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: EVENT,
+    item: {
+      id: event.id,
+      title: event.title,
+      fieldId: event.fieldId,
+      owner: event.owner,
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  });
 
+  const opacity = isDragging ? 0.4 : 1;
   return (
-    <>
-      <span
-        className={styles.event}
-        onDragStart={(e) => dragStartHandler(e)}
-        id={fieldId}
-        draggable
-        style={isAdmin ? { pointerEvents: true } : { pointerEvents: 'none' }}
-      >
-        {title}
-        {isAdmin && (
-          <i
-            className="fa fa-times"
-            onClick={onDeleteClick}
-            style={{ color: 'red', cursor: 'pointer' }}
-            role="button"
-            tabIndex={0}
-            onKeyDown={onDeleteClick}
-          />
-        )}
-      </span>
-      {isOpened && modalId === event.id && <ConfirmModal event={event} />}
-    </>
+    <div
+      ref={drag}
+      style={
+        isAdmin
+          ? { ...opacity, pointerEvents: true }
+          : { ...opacity, pointerEvents: 'none' }
+      }
+      className={styles.event}
+    >
+      {event.title}
+      {isAdmin && (
+        <div
+          className="fa fa-times text-danger"
+          onClick={() => eventDeleteHandler(event)}
+        />
+      )}
+    </div>
   );
 };
 
