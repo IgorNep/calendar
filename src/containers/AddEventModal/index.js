@@ -21,10 +21,14 @@ const AddEventModal = () => {
   const setSubmit = () => {
     setSubmitted(true);
   };
-  const { values, errors, handleChange, submitHandler, resetValues } = useForm(
-    setSubmit,
-    validateForm,
-  );
+  const {
+    values,
+    errors,
+    handleChange,
+    submitHandler,
+    resetValues,
+    onBlurHandler,
+  } = useForm(setSubmit, validateForm);
 
   useEffect(() => {
     if (submitted) {
@@ -70,6 +74,7 @@ const AddEventModal = () => {
                 placeholder="Event name"
                 value={values.event}
                 onChange={handleChange}
+                onBlur={(e) => onBlurHandler(e)}
               />
               {errors.event && (
                 <small className="text-danger">{errors.event}</small>
@@ -84,6 +89,7 @@ const AddEventModal = () => {
                 multiple
                 value={values.participants}
                 onChange={handleChange}
+                onBlur={(e) => onBlurHandler(e)}
               >
                 <option value="" disabled>
                   {users.map((user) => user.name).join(',')}
@@ -106,6 +112,7 @@ const AddEventModal = () => {
                 id="day"
                 value={values.day}
                 onChange={handleChange}
+                onBlur={(e) => onBlurHandler(e)}
               >
                 <option value="">Choose Day</option>
                 {days.map((item) => (
@@ -126,6 +133,7 @@ const AddEventModal = () => {
                 id="time"
                 value={values.time}
                 onChange={handleChange}
+                onBlur={(e) => onBlurHandler(e)}
               >
                 <option value="">Choose Time</option>
                 {time.map((item) => (

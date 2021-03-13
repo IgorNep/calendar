@@ -41,7 +41,14 @@ const useForm = (callback, validate) => {
     setValues(initialValues);
     setErrors({});
   };
-
+  const onBlurHandler = (e) => {
+    if (e.target.value.trim() === '') {
+      setErrors({
+        ...errors,
+        [e.target.name]: `${e.target.name} is required!`,
+      });
+    }
+  };
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();
@@ -51,6 +58,7 @@ const useForm = (callback, validate) => {
     handleChange,
     submitHandler,
     resetValues,
+    onBlurHandler,
     errors,
     values,
   };

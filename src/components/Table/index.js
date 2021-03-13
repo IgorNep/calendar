@@ -19,8 +19,12 @@ const Table = ({
     filteredEvents,
     isAdmin,
     eventDeleteHandler,
+    showAlert,
   },
 }) => {
+  const alertHandler = (message) => {
+    showAlert({ message, type: 'danger' });
+  };
   const [eventsData, setEventsData] = useState([]);
   const eventsToRender = filteredEvents || events;
 
@@ -74,7 +78,6 @@ const Table = ({
                     events={eventsData}
                     globalEvents={events}
                     isAdmin={isAdmin}
-                    onAlertHandler={(message) => console.log(message)}
                   >
                     {eventsData.map((event) => {
                       if (
@@ -86,6 +89,7 @@ const Table = ({
                             key={event.fieldId}
                             isAdmin={isAdmin}
                             eventDeleteHandler={eventDeleteHandler}
+                            alertHandler={alertHandler}
                           />
                         );
                       }

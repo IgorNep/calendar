@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
@@ -12,14 +14,16 @@ const TableCell = ({
   onAlertHandler,
   globalEvents,
 }) => {
-  const flag = true;
   const [{ isOver }, drop] = useDrop({
     accept: EVENT,
-    canDrop: () => {
+    canDrop: (props, monitor) => {
       const findEvent = globalEvents.find((event) => event.fieldId === fieldId);
+
       return !findEvent && isAdmin;
     },
-    drop: (item, monitor) => dragHandler(item, monitor, fieldId),
+    drop: (item, monitor) => {
+      dragHandler(item, monitor, fieldId);
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
       canDrop: !!monitor.canDrop(),

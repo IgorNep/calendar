@@ -7,7 +7,12 @@ import { useDrag } from 'react-dnd';
 import { EVENT } from 'utils/helpers/types';
 import styles from './styles.module.scss';
 
-const EventComponent = ({ event, isAdmin, eventDeleteHandler }) => {
+const EventComponent = ({
+  event,
+  isAdmin,
+  eventDeleteHandler,
+  alertHandler,
+}) => {
   const [{ isDragging }, drag] = useDrag({
     type: EVENT,
     item: {
@@ -15,6 +20,12 @@ const EventComponent = ({ event, isAdmin, eventDeleteHandler }) => {
       title: event.title,
       fieldId: event.fieldId,
       owner: event.owner,
+    },
+    end: (item, monitor) => {
+      const i = monitor.getDropResult();
+      if (i === null) {
+        alertHandler('Time slot is reserved!');
+      }
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
