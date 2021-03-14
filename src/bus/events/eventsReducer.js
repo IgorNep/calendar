@@ -1,3 +1,6 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable no-confusing-arrow */
+/* eslint-disable implicit-arrow-linebreak */
 import {
   GET_EVENTS_SUCCESS,
   EVENTS_REQUEST,
@@ -25,12 +28,18 @@ export const eventsReducer = (state, action) => {
       return {
         ...state,
         events: state.events.filter((item) => item.id !== action.payload.id),
+        filteredEvents: state.filteredEvents.filter(
+          (item) => item.id !== action.payload.id,
+        ),
         loading: false,
       };
     case UPDATE_EVENT:
       return {
         ...state,
-        events: state.events.map((item) => (item.id === action.payload.id ? action.payload : item)),
+        events: state.events.map((item) =>
+          item.id === action.payload.id ? action.payload : item,
+        ),
+
         loading: false,
       };
     case EVENTS_FAIL:
