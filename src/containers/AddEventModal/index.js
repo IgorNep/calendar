@@ -3,13 +3,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ModalContext } from 'bus/Modal/modalContext';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
-
 import Button from 'components/common/Button';
 import { EventsContext } from 'bus/events/eventsContext';
 import { days, time } from 'utils/dataStore';
 import { UsersContext } from 'bus/users/usersContext';
 import useForm from 'hooks/useForm';
 import validateForm from './validateForm';
+import DropDownComponent from './DropDownComponent';
 import styles from './styles.module.scss';
 
 const AddEventModal = () => {
@@ -17,6 +17,7 @@ const AddEventModal = () => {
   const [submitted, setSubmitted] = useState(false);
   const { addEvent, events } = useContext(EventsContext);
   const { users } = useContext(UsersContext);
+  const [participantsArr, setParticipantsArr] = useState([]);
   const [alert, setAlert] = useState('');
   const setSubmit = () => {
     setSubmitted(true);
@@ -50,10 +51,23 @@ const AddEventModal = () => {
         addEvent(newEvent);
         closeModal();
         resetValues();
+        setParticipantsArr([]);
         setSubmitted(false);
       }
     }
   }, [submitted]);
+  const onParticipantsChange = (data) => {
+    setParticipantsArr((prevState) => {
+      const userExists = prevState.find((item) => item === data);
+      if (userExists) {
+        const newArr = prevState.filter((item) => item !== data);
+        handleChange(newArr);
+        return newArr;
+      }
+      handleChange([...participantsArr, data]);
+      return [...prevState, data];
+    });
+  };
 
   if (!isOpened) return null;
 
@@ -80,31 +94,13 @@ const AddEventModal = () => {
                 <small className="text-danger">{errors.event}</small>
               )}
             </div>
-            <div className="form-group">
-              <label htmlFor="participants">Participants</label>
-              <select
-                id="participants"
-                name="participants"
-                className="form-control select"
-                multiple
-                value={values.participants}
-                onChange={handleChange}
-                onBlur={(e) => onBlurHandler(e)}
-              >
-                <option value="" disabled>
-                  {users.map((user) => user.name).join(',')}
-                </option>
-                {users.map((item) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-              {errors.participants && (
-                <small className="text-danger">{errors.participants}</small>
-              )}
-            </div>
-            <div className="form-group">
+            <DropDownComponent
+              users={users}
+              values={values}
+              onChangeCheckBoxHandler={onParticipantsChange}
+              error={errors.participants}
+            />
+            <div className="form-group pointer">
               <label htmlFor="day">Day</label>
               <select
                 className="form-control select"
@@ -146,6 +142,7 @@ const AddEventModal = () => {
                 <small className="text-danger">{errors.time}</small>
               )}
             </div>
+
             <div className={styles.buttonsGroup}>
               <Button
                 title="Cancel"

@@ -6,7 +6,7 @@ const validateForm = (values) => {
   }
 
   if (values.participants.length === 0) {
-    errors.participants = 'Participants is required!';
+    errors.participants = 'Participants field is required!';
   }
 
   if (!values.day.trim()) {

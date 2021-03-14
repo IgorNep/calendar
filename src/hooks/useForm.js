@@ -13,20 +13,15 @@ const useForm = (callback, validate) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (e.target.multiple) {
-      const newValue = Array.from(
-        e.target.selectedOptions,
-        (option) => option.value,
-      );
+    if (Array.isArray(e)) {
       setValues({
         ...values,
-        [name]: newValue,
+        participants: e,
       });
     } else {
       setValues({
         ...values,
-        [name]: value,
+        [e.target.name]: e.target.value,
       });
     }
   };
