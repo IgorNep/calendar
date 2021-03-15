@@ -6,6 +6,3 @@ export const SET_LOADING = 'SET_LOADING';
 export const GET_USERS_REQUEST = 'GET_USERS_REQUEST';
 export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
 export const GET_USERS_FAIL = 'GET_USERS_FAIL';
-
-export const SHOW_ALERT = 'SHOW_ALERT';
-export const HIDE_ALERT = 'HIDE_ALERT';

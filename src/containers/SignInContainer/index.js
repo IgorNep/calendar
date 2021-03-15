@@ -5,10 +5,10 @@ import WrapperForModal from 'components/common/WrapperForModal';
 import { ModalContext } from 'bus/Modal/modalContext';
 import Button from 'components/common/Button';
 import Loader from 'components/common/Loader';
-import { AlertContext } from 'bus/alert/alertContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { isAuthenticatedSelector } from 'bus/auth/authSelectors';
 import { authUser, setAsAdmin } from 'bus/auth/authActions';
+import { showAlert } from 'bus/alert/alertActions';
 
 const SignInContainer = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,6 @@ const SignInContainer = () => {
   const [alert, setAlert] = useState('');
   const { getUsers, users, loading, error } = useContext(UsersContext);
   const { openModal, closeModal, isOpened, modalId } = useContext(ModalContext);
-  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -28,7 +27,7 @@ const SignInContainer = () => {
   }, [isAuthenticated]);
 
   if (error) {
-    showAlert({ message: error, type: 'danger' });
+    dispatch(showAlert({ message: error, type: 'danger' }));
   }
 
   const onSubmitHandler = (e) => {

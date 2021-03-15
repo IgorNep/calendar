@@ -25,7 +25,7 @@ const Table = ({
 }) => {
   const dispatch = useDispatch();
   const alertHandler = (message) => {
-    showAlert({ message, type: 'danger' });
+    dispatch(showAlert({ message, type: 'danger' }));
   };
   const eventsToRender = filteredEvents || events;
 

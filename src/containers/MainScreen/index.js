@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { AlertContext } from 'bus/alert/alertContext';
 import Table from 'components/Table';
 import { ModalContext } from 'bus/Modal/modalContext';
 import ConfirmModal from 'components/EventComponent/ConfirmModal';
@@ -11,6 +10,7 @@ import {
   loadingSelector,
 } from 'bus/events/eventsSelectors';
 import { isAdminSelector } from 'bus/auth/authSelectors';
+import { showAlert } from 'bus/alert/alertActions';
 
 const MainScreen = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const MainScreen = () => {
   const filteredEvents = useSelector(filteredEventsSelector);
   const isAdmin = useSelector(isAdminSelector);
 
-  const { showAlert } = useContext(AlertContext);
   const { openModal, isOpened, modalId } = useContext(ModalContext);
   const [event, setEvent] = useState({});
   const eventDeleteHandler = (eventItem) => {

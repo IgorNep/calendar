@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
-import { AlertContext } from 'bus/alert/alertContext';
+import React from 'react';
 import classnames from 'classnames';
+import { useDispatch, useSelector } from 'react-redux';
+import { alertSelector } from 'bus/alert/alertSelectors';
+import { hideAlert } from 'bus/alert/alertActions';
 import styles from './styles.module.scss';
 
 const Alert = () => {
-  const { alert, hideAlert } = useContext(AlertContext);
+  const dispatch = useDispatch();
+  const alert = useSelector(alertSelector);
 
   if (!alert) return null;
 
@@ -19,7 +22,7 @@ const Alert = () => {
           type="button"
           className="close"
           aria-label="Close"
-          onClick={hideAlert}
+          onClick={() => dispatch(hideAlert())}
         >
           <span aria-hidden="true">&times;</span>
         </button>
