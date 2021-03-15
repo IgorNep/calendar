@@ -9,6 +9,7 @@ import { days, time } from 'utils/dataStore';
 import Loader from 'components/common/Loader';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDispatch } from 'react-redux';
 import TableCell from './TableCell';
 
 const Table = ({
@@ -22,6 +23,7 @@ const Table = ({
     showAlert,
   },
 }) => {
+  const dispatch = useDispatch();
   const alertHandler = (message) => {
     showAlert({ message, type: 'danger' });
   };
@@ -35,7 +37,7 @@ const Table = ({
       findEvent.fieldId = fieldId;
     }
     // eslint-disable-next-line no-unused-expressions
-    findEvent && updateEvent(findEvent);
+    findEvent && dispatch(updateEvent(findEvent));
   };
 
   return loading ? (

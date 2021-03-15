@@ -4,20 +4,24 @@ import { ModalContext } from 'bus/Modal/modalContext';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
 import Button from 'components/common/Button';
-import { EventsContext } from 'bus/events/eventsContext';
 import { days, time } from 'utils/dataStore';
 import { UsersContext } from 'bus/users/usersContext';
 import useForm from 'hooks/useForm';
 import DropDownComponent from 'components/common/DropDownComponent';
 import SelectFormGroup from 'components/common/SelectFormGroup';
 import TextInputGroup from 'components/common/TextInputGroup';
+import { useDispatch, useSelector } from 'react-redux';
+import { eventsSelector } from 'bus/events/eventsSelectors';
+import { addEvent } from 'bus/events/eventsActions';
 import validateForm from './validateForm';
 import styles from './styles.module.scss';
 
 const AddEventModal = () => {
+  const dispatch = useDispatch();
+  const events = useSelector(eventsSelector);
+
   const { isOpened, closeModal, modalId } = useContext(ModalContext);
   const [submitted, setSubmitted] = useState(false);
-  const { addEvent, events } = useContext(EventsContext);
   const { users } = useContext(UsersContext);
   const [participantsArr, setParticipantsArr] = useState([]);
   const [alert, setAlert] = useState('');
@@ -50,7 +54,7 @@ const AddEventModal = () => {
         }, 1500);
         setSubmitted(false);
       } else {
-        addEvent(newEvent);
+        dispatch(addEvent(newEvent));
         closeModal();
         resetValues();
         setParticipantsArr([]);

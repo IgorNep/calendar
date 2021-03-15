@@ -10,9 +10,17 @@ import {
   UPDATE_EVENT,
   FILTER_EVENTS,
   FILTER_CLEAR,
-} from '../types';
+} from './eventsTypes';
 
-export const eventsReducer = (state, action) => {
+const initialState = {
+  events: null,
+  filteredEvents: null,
+  loading: false,
+  success: null,
+  error: null,
+};
+
+export const eventsReducer = (state = initialState, action) => {
   switch (action.type) {
     case EVENTS_REQUEST:
       return { ...state, loading: true };
