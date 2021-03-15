@@ -4,16 +4,20 @@ import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
 import { ModalContext } from 'bus/Modal/modalContext';
 import Button from 'components/common/Button';
-import { AuthContext } from 'bus/auth/authContext';
 import Loader from 'components/common/Loader';
 import { AlertContext } from 'bus/alert/alertContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthenticatedSelector } from 'bus/auth/authSelectors';
+import { authUser, setAsAdmin } from 'bus/auth/authActions';
 
 const SignInContainer = () => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+
   const [userInfo, setUserInfo] = useState('');
   const [alert, setAlert] = useState('');
   const { getUsers, users, loading, error } = useContext(UsersContext);
   const { openModal, closeModal, isOpened, modalId } = useContext(ModalContext);
-  const { isAuthenticated, authUser, setAsAdmin } = useContext(AuthContext);
   const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
@@ -37,9 +41,9 @@ const SignInContainer = () => {
     }
     const userFind = users.find((user) => user.name === userInfo);
     if (userFind.isAdmin) {
-      setAsAdmin();
+      dispatch(setAsAdmin());
     }
-    authUser(userFind);
+    dispatch(authUser(userFind));
     closeModal();
   };
   return loading ? (

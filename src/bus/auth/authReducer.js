@@ -1,6 +1,12 @@
-import { AUTH_USER, LOGOUT, SET_AS_ADMIN } from 'bus/types';
+import { AUTH_USER, LOGOUT, SET_AS_ADMIN } from './authTypes';
 
-export const authReducer = (state, action) => {
+const initialState = {
+  isAuthenticated: localStorage.getItem('user'),
+  isAdmin: localStorage.getItem('admin'),
+  user: JSON.parse(localStorage.getItem('user')) || null,
+};
+
+export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_USER:
       localStorage.setItem('user', JSON.stringify(action.payload));

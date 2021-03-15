@@ -1,22 +1,29 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import { AuthContext } from 'bus/auth/authContext';
 import { ModalContext } from 'bus/Modal/modalContext';
 import { UsersContext } from 'bus/users/usersContext';
 import Button from 'components/common/Button';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { filterEvents, clearFilteredEvents } from 'bus/events/eventsActions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  isAdminSelector,
+  isAuthenticatedSelector,
+  userSelector,
+} from 'bus/auth/authSelectors';
+import { logout } from 'bus/auth/authActions';
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const isAdmin = useSelector(isAdminSelector);
+  const user = useSelector(userSelector);
   const { openModal } = useContext(ModalContext);
-  const { isAuthenticated, logout, isAdmin, user } = useContext(AuthContext);
   const { users } = useContext(UsersContext);
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    logout();
+    dispatch(logout());
   };
   const onChangeHandler = (e) => {
     if (e.target.value.trim() === '') {

@@ -8,23 +8,20 @@ import store from 'core/store';
 import 'assets/styles/index.scss';
 import { UsersState } from 'bus/users/UsersState';
 import { ModalState } from 'bus/Modal/ModalState';
-import { AuthState } from 'bus/auth/AuthState';
 import { AlertState } from 'bus/alert/AlertState';
 
 ReactDOM.render(
   <React.StrictMode>
     <AlertState>
-      <AuthState>
-        <UsersState>
-          <ModalState>
-            <Provider store={store}>
-              <Router>
-                <App />
-              </Router>
-            </Provider>
-          </ModalState>
-        </UsersState>
-      </AuthState>
+      <UsersState>
+        <ModalState>
+          <Provider store={store}>
+            <Router>
+              <App />
+            </Router>
+          </Provider>
+        </ModalState>
+      </UsersState>
     </AlertState>
   </React.StrictMode>,
   document.getElementById('root'),
