@@ -1,0 +1,38 @@
+.selectWrapper {
+  position: relative;
+  border-radius: 7px;
+}
+.selectHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  i {
+    float: right;
+    margin-right: -8px;
+    font-weight: bold;
+    padding-top: 3px;
+  }
+}
+.selectGroup {
+  width: 100%;
+  padding: 1rem 0rem;
+  border: 1px solid #ced4da;
+  background: #fff;
+  position: absolute;
+  bottom: -12.2rem;
+  left: 0;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.5);
+
+  label {
+    width: 100%;
+    display: flex;
+    padding-left: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+  }
+  input {
+    margin-right: 0.5rem;
+    visibility: hidden;
+  }
+}

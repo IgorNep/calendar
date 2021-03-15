@@ -5,8 +5,8 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import classnames from 'classnames';
+import CheckboxItem from 'components/common/CheckboxItem';
 import styles from './styles.module.scss';
-import CheckboxItem from './CheckboxItem';
 
 const DropDownCOmponent = ({
   users,

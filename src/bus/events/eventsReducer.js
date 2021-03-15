@@ -28,9 +28,9 @@ export const eventsReducer = (state, action) => {
       return {
         ...state,
         events: state.events.filter((item) => item.id !== action.payload.id),
-        filteredEvents: state.filteredEvents.filter(
-          (item) => item.id !== action.payload.id,
-        ),
+        filteredEvents:
+          state.filteredEvents &&
+          state.filteredEvents.filter((item) => item.id !== action.payload.id),
         loading: false,
       };
     case UPDATE_EVENT:

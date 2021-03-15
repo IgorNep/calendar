@@ -8,8 +8,10 @@ import { EventsContext } from 'bus/events/eventsContext';
 import { days, time } from 'utils/dataStore';
 import { UsersContext } from 'bus/users/usersContext';
 import useForm from 'hooks/useForm';
+import DropDownComponent from 'components/common/DropDownComponent';
+import SelectFormGroup from 'components/common/SelectFormGroup';
+import TextInputGroup from 'components/common/TextInputGroup';
 import validateForm from './validateForm';
-import DropDownComponent from './DropDownComponent';
 import styles from './styles.module.scss';
 
 const AddEventModal = () => {
@@ -78,71 +80,40 @@ const AddEventModal = () => {
         <WrapperForModal title="Create New Event">
           <form className="form" onSubmit={submitHandler}>
             {alert && <p className="alert alert-danger">{alert}</p>}
-            <div className="form-group">
-              <label htmlFor="event">Event Name</label>
-              <input
-                id="event"
-                name="event"
-                type="text"
-                className="form-control"
-                placeholder="Event name"
-                value={values.event}
-                onChange={handleChange}
-                onBlur={(e) => onBlurHandler(e)}
-              />
-              {errors.event && (
-                <small className="text-danger">{errors.event}</small>
-              )}
-            </div>
+
+            <TextInputGroup
+              label="Event Name"
+              name="event"
+              value={values.event}
+              placeholder="Event Name"
+              handleChange={handleChange}
+              onBlurHandler={onBlurHandler}
+              error={errors.event}
+            />
             <DropDownComponent
               users={users}
               values={values}
               onChangeCheckBoxHandler={onParticipantsChange}
               error={errors.participants}
             />
-            <div className="form-group pointer">
-              <label htmlFor="day">Day</label>
-              <select
-                className="form-control select"
-                name="day"
-                id="day"
-                value={values.day}
-                onChange={handleChange}
-                onBlur={(e) => onBlurHandler(e)}
-              >
-                <option value="">Choose Day</option>
-                {days.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              {errors.day && (
-                <small className="text-danger">{errors.day}</small>
-              )}
-            </div>
-            <div className="form-group">
-              <label htmlFor="time">Time</label>
-              <select
-                className="form-control select"
-                name="time"
-                id="time"
-                value={values.time}
-                onChange={handleChange}
-                onBlur={(e) => onBlurHandler(e)}
-              >
-                <option value="">Choose Time</option>
-                {time.map((item) => (
-                  <option value={item} key={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-              {errors.time && (
-                <small className="text-danger">{errors.time}</small>
-              )}
-            </div>
-
+            <SelectFormGroup
+              value={values.day}
+              handleChange={handleChange}
+              onBlurHandler={onBlurHandler}
+              error={errors.day}
+              optionsArr={days}
+              label="Day"
+              name="day"
+            />
+            <SelectFormGroup
+              value={values.time}
+              handleChange={handleChange}
+              onBlurHandler={onBlurHandler}
+              error={errors.time}
+              optionsArr={time}
+              label="Time"
+              name="time"
+            />
             <div className={styles.buttonsGroup}>
               <Button
                 title="Cancel"

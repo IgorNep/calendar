@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { capitalizeFirstLetter } from 'utils/helpers/capitalizeFirstLetter';
 
 const useForm = (callback, validate) => {
   const initialValues = {
@@ -40,7 +41,7 @@ const useForm = (callback, validate) => {
     if (e.target.value.trim() === '') {
       setErrors({
         ...errors,
-        [e.target.name]: `${e.target.name} is required!`,
+        [e.target.name]: `${capitalizeFirstLetter(e.target.name)} is required!`,
       });
     }
   };

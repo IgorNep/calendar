@@ -18,10 +18,7 @@ const CheckboxItem = ({ user, onChangeHandler }) => {
         }}
       />
       {isChecked && (
-        <i
-          className="fa fa-check text-primary"
-          style={{ marginRight: '0.5rem' }}
-        />
+        <i className="fa fa-check " style={{ marginRight: '0.5rem' }} />
       )}
     </label>
   );
