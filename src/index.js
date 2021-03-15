@@ -6,17 +6,14 @@ import { Provider } from 'react-redux';
 import store from 'core/store';
 
 import 'assets/styles/index.scss';
-import { ModalState } from 'bus/Modal/ModalState';
 
 ReactDOM.render(
   <React.StrictMode>
-    <ModalState>
-      <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
-    </ModalState>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

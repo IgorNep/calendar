@@ -1,6 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from 'components/Table';
-import { ModalContext } from 'bus/Modal/modalContext';
 import ConfirmModal from 'components/EventComponent/ConfirmModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEvents, updateEvent } from 'bus/events/eventsActions';
@@ -11,6 +10,8 @@ import {
 } from 'bus/events/eventsSelectors';
 import { isAdminSelector } from 'bus/auth/authSelectors';
 import { showAlert } from 'bus/alert/alertActions';
+import { openModal } from 'bus/Modal/modalActions';
+import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
 
 const MainScreen = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,13 @@ const MainScreen = () => {
   const events = useSelector(eventsSelector);
   const filteredEvents = useSelector(filteredEventsSelector);
   const isAdmin = useSelector(isAdminSelector);
+  const isOpened = useSelector(isOpenedSelector);
+  const modalId = useSelector(modalIdSelector);
 
-  const { openModal, isOpened, modalId } = useContext(ModalContext);
   const [event, setEvent] = useState({});
   const eventDeleteHandler = (eventItem) => {
     setEvent(eventItem);
-    openModal(eventItem.id);
+    dispatch(openModal(eventItem.id));
   };
 
   useEffect(() => {

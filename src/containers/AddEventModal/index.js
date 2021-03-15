@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
-import React, { useContext, useEffect, useState } from 'react';
-import { ModalContext } from 'bus/Modal/modalContext';
+import React, { useEffect, useState } from 'react';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
 import Button from 'components/common/Button';
@@ -13,6 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { eventsSelector } from 'bus/events/eventsSelectors';
 import { addEvent } from 'bus/events/eventsActions';
 import { usersSelector } from 'bus/users/usersSelectors';
+import { closeModal } from 'bus/Modal/modalActions';
+import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
 import validateForm from './validateForm';
 import styles from './styles.module.scss';
 
@@ -20,7 +21,8 @@ const AddEventModal = () => {
   const dispatch = useDispatch();
   const events = useSelector(eventsSelector);
   const users = useSelector(usersSelector);
-  const { isOpened, closeModal, modalId } = useContext(ModalContext);
+  const isOpened = useSelector(isOpenedSelector);
+  const modalId = useSelector(modalIdSelector);
   const [submitted, setSubmitted] = useState(false);
   const [participantsArr, setParticipantsArr] = useState([]);
   const [alert, setAlert] = useState('');
@@ -54,7 +56,7 @@ const AddEventModal = () => {
         setSubmitted(false);
       } else {
         dispatch(addEvent(newEvent));
-        closeModal();
+        dispatch(closeModal());
         resetValues();
         setParticipantsArr([]);
         setSubmitted(false);
@@ -123,7 +125,7 @@ const AddEventModal = () => {
                 extraClassName="btn-secondary"
                 type="button"
                 onClick={() => {
-                  closeModal();
+                  dispatch(closeModal());
                   resetValues();
                 }}
               />

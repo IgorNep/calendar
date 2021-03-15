@@ -1,21 +1,20 @@
 /* eslint-disable react/prop-types */
-import { ModalContext } from 'bus/Modal/modalContext';
 import Button from 'components/common/Button';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
-import React, { useContext } from 'react';
+import React from 'react';
 import { deleteEvent } from 'bus/events/eventsActions';
 import { useDispatch } from 'react-redux';
+import { closeModal } from 'bus/Modal/modalActions';
 import styles from './styles.module.scss';
 
 const ConfirmModal = ({ event }) => {
   const dispatch = useDispatch();
 
-  const { closeModal } = useContext(ModalContext);
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(deleteEvent(event));
-    closeModal();
+    dispatch(closeModal());
   };
   return (
     <Portal>
@@ -30,7 +29,7 @@ const ConfirmModal = ({ event }) => {
             <Button
               title="Cancel"
               type="button"
-              onClick={closeModal}
+              onClick={() => dispatch(closeModal())}
               className="btn btn-secondary"
             />
             <Button title="Yes" type="submit" className="btn btn-primary" />

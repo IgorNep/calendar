@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
-import { ModalContext } from 'bus/Modal/modalContext';
 import Button from 'components/common/Button';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { filterEvents, clearFilteredEvents } from 'bus/events/eventsActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +11,7 @@ import {
 } from 'bus/auth/authSelectors';
 import { logout } from 'bus/auth/authActions';
 import { usersSelector } from 'bus/users/usersSelectors';
+import { openModal } from 'bus/Modal/modalActions';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ const Navbar = () => {
   const isAdmin = useSelector(isAdminSelector);
   const user = useSelector(userSelector);
   const users = useSelector(usersSelector);
-  const { openModal } = useContext(ModalContext);
 
   const logoutHandler = (e) => {
     e.preventDefault();
@@ -46,7 +45,7 @@ const Navbar = () => {
               <Button
                 extraClassName="btn-secondary py-2"
                 title="+ Add Event"
-                onClick={() => openModal('js-create-event')}
+                onClick={() => dispatch(openModal('js-create-event'))}
               />
             </li>
           )}
