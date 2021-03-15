@@ -11,8 +11,6 @@ export const ModalState = ({ children }) => {
   };
   const [state, dispatch] = useReducer(modalReducer, initialState);
 
-  const openModal = (id) => dispatch({ type: OPEN_MODAL, payload: id });
-  const closeModal = () => dispatch({ type: CLOSE_MODAL });
   const { isOpened, modalId } = state;
   return (
     <ModalContext.Provider value={{ openModal, closeModal, isOpened, modalId }}>

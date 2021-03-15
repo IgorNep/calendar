@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { UsersContext } from 'bus/users/usersContext';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
 import { ModalContext } from 'bus/Modal/modalContext';
@@ -9,19 +8,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAuthenticatedSelector } from 'bus/auth/authSelectors';
 import { authUser, setAsAdmin } from 'bus/auth/authActions';
 import { showAlert } from 'bus/alert/alertActions';
+import {
+  errorSelector,
+  loadingSelector,
+  usersSelector,
+} from 'bus/users/usersSelectors';
+import { getUsers } from 'bus/users/usersActions';
 
 const SignInContainer = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const users = useSelector(usersSelector);
+  const usersLoading = useSelector(loadingSelector);
+  const error = useSelector(errorSelector);
 
   const [userInfo, setUserInfo] = useState('');
   const [alert, setAlert] = useState('');
-  const { getUsers, users, loading, error } = useContext(UsersContext);
   const { openModal, closeModal, isOpened, modalId } = useContext(ModalContext);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      getUsers();
+      dispatch(getUsers());
       openModal('js-signin');
     }
   }, [isAuthenticated]);
@@ -45,7 +52,7 @@ const SignInContainer = () => {
     dispatch(authUser(userFind));
     closeModal();
   };
-  return loading ? (
+  return usersLoading ? (
     <Loader />
   ) : (
     users && isOpened && modalId === 'js-signin' && (

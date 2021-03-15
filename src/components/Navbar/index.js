@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import { ModalContext } from 'bus/Modal/modalContext';
-import { UsersContext } from 'bus/users/usersContext';
 import Button from 'components/common/Button';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -12,14 +11,15 @@ import {
   userSelector,
 } from 'bus/auth/authSelectors';
 import { logout } from 'bus/auth/authActions';
+import { usersSelector } from 'bus/users/usersSelectors';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector(isAuthenticatedSelector);
   const isAdmin = useSelector(isAdminSelector);
   const user = useSelector(userSelector);
+  const users = useSelector(usersSelector);
   const { openModal } = useContext(ModalContext);
-  const { users } = useContext(UsersContext);
 
   const logoutHandler = (e) => {
     e.preventDefault();

@@ -5,7 +5,6 @@ import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
 import Button from 'components/common/Button';
 import { days, time } from 'utils/dataStore';
-import { UsersContext } from 'bus/users/usersContext';
 import useForm from 'hooks/useForm';
 import DropDownComponent from 'components/common/DropDownComponent';
 import SelectFormGroup from 'components/common/SelectFormGroup';
@@ -13,16 +12,16 @@ import TextInputGroup from 'components/common/TextInputGroup';
 import { useDispatch, useSelector } from 'react-redux';
 import { eventsSelector } from 'bus/events/eventsSelectors';
 import { addEvent } from 'bus/events/eventsActions';
+import { usersSelector } from 'bus/users/usersSelectors';
 import validateForm from './validateForm';
 import styles from './styles.module.scss';
 
 const AddEventModal = () => {
   const dispatch = useDispatch();
   const events = useSelector(eventsSelector);
-
+  const users = useSelector(usersSelector);
   const { isOpened, closeModal, modalId } = useContext(ModalContext);
   const [submitted, setSubmitted] = useState(false);
-  const { users } = useContext(UsersContext);
   const [participantsArr, setParticipantsArr] = useState([]);
   const [alert, setAlert] = useState('');
   const setSubmit = () => {
