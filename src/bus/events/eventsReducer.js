@@ -39,6 +39,11 @@ export const eventsReducer = (state, action) => {
         events: state.events.map((item) =>
           item.id === action.payload.id ? action.payload : item,
         ),
+        filteredEvents:
+          state.filteredEvents &&
+          state.filteredEvents.map((item) =>
+            item.id === action.payload.id ? action.payload : item,
+          ),
 
         loading: false,
       };
