@@ -11,6 +11,7 @@ const EventComponent = ({
   event,
   isAdmin,
   eventDeleteHandler,
+  eventEditHandler,
   alertHandler,
 }) => {
   const [{ isDragging }, drag] = useDrag({
@@ -45,10 +46,16 @@ const EventComponent = ({
     >
       {event.title}
       {isAdmin && (
-        <div
-          className="fa fa-times text-danger"
-          onClick={() => eventDeleteHandler(event)}
-        />
+        <div>
+          <i
+            className="fa fa-pencil text-dark "
+            onClick={() => eventEditHandler(event)}
+          />
+          <i
+            className="fa fa-times text-danger pl-2"
+            onClick={() => eventDeleteHandler(event)}
+          />
+        </div>
       )}
     </div>
   );

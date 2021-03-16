@@ -14,16 +14,19 @@ export const usersReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USERS_REQUEST:
       return {
+        ...state,
         loading: true,
       };
     case GET_USERS_SUCCESS:
       localStorage.setItem('users', JSON.stringify(action.payload));
       return {
+        ...state,
         loading: false,
         users: action.payload,
       };
     case GET_USERS_FAIL:
       return {
+        ...state,
         loading: false,
         error: action.payload,
       };

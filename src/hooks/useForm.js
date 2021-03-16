@@ -27,6 +27,10 @@ const useForm = (callback, validate) => {
     }
   };
 
+  const setInitialValues = (valuesObj) => {
+    setValues(valuesObj);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     setErrors(validate(values));
@@ -55,6 +59,7 @@ const useForm = (callback, validate) => {
     submitHandler,
     resetValues,
     onBlurHandler,
+    setInitialValues,
     errors,
     values,
   };

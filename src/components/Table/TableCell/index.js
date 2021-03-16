@@ -11,12 +11,11 @@ const TableCell = ({
   dragHandler,
   fieldId,
   isAdmin,
-  onAlertHandler,
   globalEvents,
 }) => {
   const [{ isOver }, drop] = useDrop({
     accept: EVENT,
-    canDrop: (props, monitor) => {
+    canDrop: () => {
       const findEvent = globalEvents.find((event) => event.fieldId === fieldId);
 
       return !findEvent && isAdmin;

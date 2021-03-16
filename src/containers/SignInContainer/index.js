@@ -15,6 +15,7 @@ import {
 import { getUsers } from 'bus/users/usersActions';
 import { closeModal, openModal } from 'bus/Modal/modalActions';
 import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
+import Alert from 'components/common/Alert';
 
 const SignInContainer = () => {
   const dispatch = useDispatch();
@@ -35,9 +36,11 @@ const SignInContainer = () => {
     }
   }, [isAuthenticated]);
 
-  if (error) {
-    dispatch(showAlert({ message: error, type: 'danger' }));
-  }
+  useEffect(() => {
+    if (error) {
+      dispatch(showAlert({ message: error.message, type: 'danger' }));
+    }
+  }, [error]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -60,6 +63,7 @@ const SignInContainer = () => {
     users && isOpened && modalId === 'js-signin' && (
       <Portal>
         <WrapperForModal title="Please Authorize">
+          {error && <Alert />}
           <form onSubmit={onSubmitHandler}>
             <div className="form-group pb-2 ">
               <label htmlFor="userInfo">Authorize</label>

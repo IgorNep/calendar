@@ -28,6 +28,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         isAuthenticated: false,
         isAdmin: false,
+        user: null,
       };
     default:
       return state;

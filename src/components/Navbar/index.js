@@ -2,7 +2,11 @@
 import Button from 'components/common/Button';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { filterEvents, clearFilteredEvents } from 'bus/events/eventsActions';
+import {
+  filterEvents,
+  clearFilteredEvents,
+  clearEvents,
+} from 'bus/events/eventsActions';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   isAdminSelector,
@@ -22,6 +26,7 @@ const Navbar = () => {
 
   const logoutHandler = (e) => {
     e.preventDefault();
+    dispatch(clearEvents());
     dispatch(logout());
   };
   const onChangeHandler = (e) => {
@@ -41,28 +46,30 @@ const Navbar = () => {
         </div>
         <ul className="navbar-nav">
           {isAdmin && (
-            <li className="nav-item">
-              <Button
-                extraClassName="btn-secondary py-2"
-                title="+ Add Event"
-                onClick={() => dispatch(openModal('js-create-event'))}
-              />
-            </li>
+            <>
+              <li className="nav-item">
+                <Button
+                  extraClassName="btn-secondary py-2"
+                  title="+ Add Event"
+                  onClick={() => dispatch(openModal('js-create-event'))}
+                />
+              </li>
+              <li className="nav-item">
+                <select
+                  className="form-select form-select-lg py-2"
+                  onChange={onChangeHandler}
+                >
+                  <option value="">All Participants</option>
+                  {users.map((userItem) => (
+                    <option key={userItem.id} value={userItem.name}>
+                      {userItem.name}
+                    </option>
+                  ))}
+                </select>
+              </li>
+            </>
           )}
 
-          <li className="nav-item">
-            <select
-              className="form-select form-select-lg py-2"
-              onChange={onChangeHandler}
-            >
-              <option value="">All Participants</option>
-              {users.map((userItem) => (
-                <option key={userItem.id} value={userItem.name}>
-                  {userItem.name}
-                </option>
-              ))}
-            </select>
-          </li>
           {isAuthenticated && (
             <>
               <li className="nav-item">

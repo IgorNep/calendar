@@ -8,12 +8,7 @@ import Private from './Private';
 const App = () => {
   const isAuthenticated = useSelector(isAuthenticatedSelector);
 
-  return (
-    <>
-      <SignInContainer />
-      {isAuthenticated && <Private />}
-    </>
-  );
+  return <>{isAuthenticated ? <Private /> : <SignInContainer />}</>;
 };
 
 export default App;

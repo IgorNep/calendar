@@ -9,23 +9,28 @@ import DropDownComponent from 'components/common/DropDownComponent';
 import SelectFormGroup from 'components/common/SelectFormGroup';
 import TextInputGroup from 'components/common/TextInputGroup';
 import { useDispatch, useSelector } from 'react-redux';
-import { eventsSelector } from 'bus/events/eventsSelectors';
-import { addEvent } from 'bus/events/eventsActions';
+import {
+  currentEventSelector,
+  eventsSelector,
+} from 'bus/events/eventsSelectors';
+import { clearCurrentEvent, updateEvent } from 'bus/events/eventsActions';
 import { usersSelector } from 'bus/users/usersSelectors';
 import { closeModal } from 'bus/Modal/modalActions';
 import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
 import validateForm from './validateForm';
 import styles from './styles.module.scss';
 
-const AddEventModal = () => {
+const EditEventModal = () => {
   const dispatch = useDispatch();
   const events = useSelector(eventsSelector);
   const users = useSelector(usersSelector);
+  const currentEvent = useSelector(currentEventSelector);
   const isOpened = useSelector(isOpenedSelector);
   const modalId = useSelector(modalIdSelector);
   const [submitted, setSubmitted] = useState(false);
   const [participantsArr, setParticipantsArr] = useState([]);
   const [alert, setAlert] = useState('');
+
   const setSubmit = () => {
     setSubmitted(true);
   };
@@ -36,7 +41,20 @@ const AddEventModal = () => {
     submitHandler,
     resetValues,
     onBlurHandler,
+    setInitialValues,
   } = useForm(setSubmit, validateForm);
+
+  useEffect(() => {
+    if (currentEvent) {
+      const initialValues = {
+        event: currentEvent.title,
+        participants: currentEvent.owner,
+        day: currentEvent.day,
+        time: currentEvent.time,
+      };
+      setInitialValues(initialValues);
+    }
+  }, [currentEvent]);
 
   useEffect(() => {
     if (submitted) {
@@ -44,8 +62,9 @@ const AddEventModal = () => {
         fieldId: values.day + values.time.substring(0, 2),
         owner: values.participants,
         title: values.event,
-        day: values.day,
         time: values.time,
+        day: values.day,
+        id: currentEvent.id,
       };
       const eventExist = events.find(
         (item) => item.fieldId === newEvent.fieldId,
@@ -57,11 +76,12 @@ const AddEventModal = () => {
         }, 1500);
         setSubmitted(false);
       } else {
-        dispatch(addEvent(newEvent));
+        dispatch(updateEvent(newEvent));
         dispatch(closeModal());
         resetValues();
         setParticipantsArr([]);
         setSubmitted(false);
+        dispatch(clearCurrentEvent());
       }
     }
   }, [submitted]);
@@ -82,9 +102,9 @@ const AddEventModal = () => {
 
   return (
     isOpened &&
-    modalId === 'js-create-event' && (
+    modalId === 'js-edit-modal' && (
       <Portal>
-        <WrapperForModal title="Create New Event">
+        <WrapperForModal title="Edit Event">
           <form className="form" onSubmit={submitHandler}>
             {alert && <p className="alert alert-danger">{alert}</p>}
 
@@ -128,12 +148,13 @@ const AddEventModal = () => {
                 type="button"
                 onClick={() => {
                   dispatch(closeModal());
+                  dispatch(clearCurrentEvent());
                   setParticipantsArr([]);
                   resetValues();
                 }}
               />
               <Button
-                title="Submit"
+                title="Update"
                 extraClassName="btn-primary"
                 type="submit"
               />
@@ -145,4 +166,4 @@ const AddEventModal = () => {
   );
 };
 
-export default AddEventModal;
+export default EditEventModal;

@@ -1,4 +1,5 @@
 export const eventsSelector = (state) => state.events.events;
+export const currentEventSelector = (state) => state.events.currentEvent;
 export const filteredEventsSelector = (state) => state.events.filteredEvents;
 export const loadingSelector = (state) => state.events.loading;
 export const errorSelector = (state) => state.events.error;

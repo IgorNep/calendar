@@ -3,13 +3,14 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import EventComponent from 'components/EventComponent';
 import { days, time } from 'utils/dataStore';
 import Loader from 'components/common/Loader';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { successSelector } from 'bus/events/eventsSelectors';
 import TableCell from './TableCell';
 
 const Table = ({
@@ -20,10 +21,12 @@ const Table = ({
     filteredEvents,
     isAdmin,
     eventDeleteHandler,
+    eventEditHandler,
     showAlert,
   },
 }) => {
   const dispatch = useDispatch();
+  const success = useSelector(successSelector);
   const alertHandler = (message) => {
     dispatch(showAlert({ message, type: 'danger' }));
   };
@@ -39,6 +42,12 @@ const Table = ({
     // eslint-disable-next-line no-unused-expressions
     findEvent && dispatch(updateEvent(findEvent));
   };
+
+  useEffect(() => {
+    if (success) {
+      dispatch(showAlert({ message: success.message, type: 'success' }));
+    }
+  }, [success]);
 
   return loading ? (
     <Loader />
@@ -79,6 +88,7 @@ const Table = ({
                             key={event.fieldId}
                             isAdmin={isAdmin}
                             eventDeleteHandler={eventDeleteHandler}
+                            eventEditHandler={eventEditHandler}
                             alertHandler={alertHandler}
                           />
                         );

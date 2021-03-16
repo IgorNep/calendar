@@ -45,6 +45,8 @@ class ApiService {
         fieldId: event.fieldId,
         owner: event.owner,
         title: event.title,
+        day: event.day,
+        time: event.time,
       }),
     };
     const config = getConfig();
