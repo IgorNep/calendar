@@ -21,62 +21,48 @@ class ApiService {
   }
 
   async getData(endpoint = EVENTS) {
-    try {
-      const res = await axios.get(`${this.baseUrl}${this.endpoints[endpoint]}`);
-      return await res.data;
-    } catch (err) {
-      console.error(err);
-    }
+    const res = await axios.get(`${this.baseUrl}${this.endpoints[endpoint]}`);
+    return res.data;
   }
 
   async addData(endpoint = EVENTS, newData, params) {
-    try {
-      const formData = {
-        data: JSON.stringify(newData),
-      };
-      const config = getConfig();
-      const newParams = { ...params, config };
-      const res = await axios.post(
-        `${this.baseUrl}${this.endpoints[endpoint]}`,
-        formData,
-        newParams,
-      );
-      return await res.data;
-    } catch (err) {
-      console.error(err);
-    }
+    const formData = {
+      data: JSON.stringify(newData),
+    };
+    const config = getConfig();
+    const newParams = { ...params, config };
+    const res = await axios.post(
+      `${this.baseUrl}${this.endpoints[endpoint]}`,
+      formData,
+      newParams,
+    );
+    return res.data;
   }
 
   async updateData(endpoint = EVENTS, event, params) {
-    try {
-      const formData = {
-        data: JSON.stringify({
-          fieldId: event.fieldId,
-          owner: event.owner,
-          title: event.title,
-        }),
-      };
-      const config = getConfig();
-      const newParams = { ...params, config };
-      const res = await axios.put(
-        `${this.baseUrl}${this.endpoints[endpoint]}/${event.id}`,
-        formData,
-        newParams,
-      );
-      return await res.data;
-    } catch (err) {
-      console.error(err);
-    }
+    const formData = {
+      data: JSON.stringify({
+        fieldId: event.fieldId,
+        owner: event.owner,
+        title: event.title,
+        day: event.day,
+        time: event.time,
+      }),
+    };
+    const config = getConfig();
+    const newParams = { ...params, config };
+    const res = await axios.put(
+      `${this.baseUrl}${this.endpoints[endpoint]}/${event.id}`,
+      formData,
+      newParams,
+    );
+    return res.data;
   }
 
   async removeData(endpoint, event) {
-    try {
-      await axios.delete(
-        `${this.baseUrl}${this.endpoints[endpoint]}/${event.id}`,
-      );
-    } catch (err) {
-      console.error(err);
-    }
+    await axios.delete(
+      `${this.baseUrl}${this.endpoints[endpoint]}/${event.id}`,
+    );
   }
 }
 

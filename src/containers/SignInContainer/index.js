@@ -1,31 +1,46 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { UsersContext } from 'bus/users/usersContext';
+import React, { useEffect, useState } from 'react';
 import Portal from 'components/common/Portal';
 import WrapperForModal from 'components/common/WrapperForModal';
-import { ModalContext } from 'bus/Modal/modalContext';
 import Button from 'components/common/Button';
-import { AuthContext } from 'bus/auth/authContext';
 import Loader from 'components/common/Loader';
-import { AlertContext } from 'bus/alert/alertContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthenticatedSelector } from 'bus/auth/authSelectors';
+import { authUser, setAsAdmin } from 'bus/auth/authActions';
+import { showAlert } from 'bus/alert/alertActions';
+import {
+  errorSelector,
+  loadingSelector,
+  usersSelector,
+} from 'bus/users/usersSelectors';
+import { getUsers } from 'bus/users/usersActions';
+import { closeModal, openModal } from 'bus/Modal/modalActions';
+import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
+import Alert from 'components/common/Alert';
 
 const SignInContainer = () => {
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
+  const users = useSelector(usersSelector);
+  const usersLoading = useSelector(loadingSelector);
+  const error = useSelector(errorSelector);
+  const isOpened = useSelector(isOpenedSelector);
+  const modalId = useSelector(modalIdSelector);
+
   const [userInfo, setUserInfo] = useState('');
   const [alert, setAlert] = useState('');
-  const { getUsers, users, loading, error } = useContext(UsersContext);
-  const { openModal, closeModal, isOpened, modalId } = useContext(ModalContext);
-  const { isAuthenticated, authUser, setAsAdmin } = useContext(AuthContext);
-  const { showAlert } = useContext(AlertContext);
 
   useEffect(() => {
     if (!isAuthenticated) {
-      getUsers();
-      openModal('js-signin');
+      dispatch(getUsers());
+      dispatch(openModal('js-signin'));
     }
   }, [isAuthenticated]);
 
-  if (error) {
-    showAlert({ message: error, type: 'danger' });
-  }
+  useEffect(() => {
+    if (error) {
+      dispatch(showAlert({ message: error.message, type: 'danger' }));
+    }
+  }, [error]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -37,17 +52,18 @@ const SignInContainer = () => {
     }
     const userFind = users.find((user) => user.name === userInfo);
     if (userFind.isAdmin) {
-      setAsAdmin();
+      dispatch(setAsAdmin());
     }
-    authUser(userFind);
-    closeModal();
+    dispatch(authUser(userFind));
+    dispatch(closeModal());
   };
-  return loading ? (
+  return usersLoading ? (
     <Loader />
   ) : (
     users && isOpened && modalId === 'js-signin' && (
       <Portal>
         <WrapperForModal title="Please Authorize">
+          {error && <Alert />}
           <form onSubmit={onSubmitHandler}>
             <div className="form-group pb-2 ">
               <label htmlFor="userInfo">Authorize</label>

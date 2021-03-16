@@ -9,20 +9,21 @@ import { EVENT } from 'utils/helpers/types';
 const TableCell = ({
   children,
   dragHandler,
-  fieldId,
+  fieldMeta,
   isAdmin,
-  onAlertHandler,
   globalEvents,
 }) => {
   const [{ isOver }, drop] = useDrop({
     accept: EVENT,
-    canDrop: (props, monitor) => {
-      const findEvent = globalEvents.find((event) => event.fieldId === fieldId);
+    canDrop: () => {
+      const findEvent = globalEvents.find(
+        (event) => event.fieldId === fieldMeta.fieldId,
+      );
 
       return !findEvent && isAdmin;
     },
     drop: (item, monitor) => {
-      dragHandler(item, monitor, fieldId);
+      dragHandler(item, monitor, fieldMeta);
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),

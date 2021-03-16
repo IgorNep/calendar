@@ -3,12 +3,14 @@
 /* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import EventComponent from 'components/EventComponent';
 import { days, time } from 'utils/dataStore';
 import Loader from 'components/common/Loader';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useDispatch, useSelector } from 'react-redux';
+import { successSelector } from 'bus/events/eventsSelectors';
 import TableCell from './TableCell';
 
 const Table = ({
@@ -19,24 +21,35 @@ const Table = ({
     filteredEvents,
     isAdmin,
     eventDeleteHandler,
+    eventEditHandler,
     showAlert,
   },
 }) => {
+  const dispatch = useDispatch();
+  const success = useSelector(successSelector);
   const alertHandler = (message) => {
-    showAlert({ message, type: 'danger' });
+    dispatch(showAlert({ message, type: 'danger' }));
   };
   const eventsToRender = filteredEvents || events;
 
-  const dragHandler = (item, monitor, fieldId) => {
+  const dragHandler = (item, monitor, fieldMeta) => {
     const findEvent = events.find(
       (eventItem) => eventItem.fieldId === item.fieldId,
     );
     if (findEvent) {
-      findEvent.fieldId = fieldId;
+      findEvent.fieldId = fieldMeta.fieldId;
+      findEvent.time = fieldMeta.time;
+      findEvent.day = fieldMeta.day;
     }
     // eslint-disable-next-line no-unused-expressions
-    findEvent && updateEvent(findEvent);
+    findEvent && dispatch(updateEvent(findEvent));
   };
+
+  useEffect(() => {
+    if (success) {
+      dispatch(showAlert({ message: success.message, type: 'success' }));
+    }
+  }, [success]);
 
   return loading ? (
     <Loader />
@@ -61,7 +74,12 @@ const Table = ({
                 {days.map((dayItem) => (
                   <TableCell
                     key={Math.random() * 100}
-                    fieldId={`${dayItem}${hour.substring(0, 2)}`}
+                    fieldMeta={{
+                      fieldId: `${dayItem}${hour.substring(0, 2)}`,
+                      time: hour,
+                      day: dayItem,
+                    }}
+                    // fieldId={`${dayItem}${hour.substring(0, 2)}`}
                     dragHandler={dragHandler}
                     events={eventsToRender}
                     globalEvents={events}
@@ -77,6 +95,7 @@ const Table = ({
                             key={event.fieldId}
                             isAdmin={isAdmin}
                             eventDeleteHandler={eventDeleteHandler}
+                            eventEditHandler={eventEditHandler}
                             alertHandler={alertHandler}
                           />
                         );

@@ -1,18 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 // import Public from './Public';
 import SignInContainer from 'containers/SignInContainer';
-import { AuthContext } from 'bus/auth/authContext';
+import { useSelector } from 'react-redux';
+import { isAuthenticatedSelector } from 'bus/auth/authSelectors';
 import Private from './Private';
 
 const App = () => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const isAuthenticated = useSelector(isAuthenticatedSelector);
 
-  return (
-    <>
-      <SignInContainer />
-      {isAuthenticated && <Private />}
-    </>
-  );
+  return <>{isAuthenticated ? <Private /> : <SignInContainer />}</>;
 };
 
 export default App;

@@ -1,31 +1,60 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { AlertContext } from 'bus/alert/alertContext';
-import { EventsContext } from 'bus/events/eventsContext';
+/* eslint-disable no-unused-expressions */
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
+import React, { useEffect, useState } from 'react';
 import Table from 'components/Table';
-import { AuthContext } from 'bus/auth/authContext';
-import { ModalContext } from 'bus/Modal/modalContext';
 import ConfirmModal from 'components/EventComponent/ConfirmModal';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getEvents,
+  updateEvent,
+  setCurrentEvent,
+} from 'bus/events/eventsActions';
+import {
+  eventsSelector,
+  filteredEventsSelector,
+  loadingSelector,
+  successSelector,
+} from 'bus/events/eventsSelectors';
+import {
+  isAdminSelector,
+  // userSelector
+} from 'bus/auth/authSelectors';
+import { showAlert } from 'bus/alert/alertActions';
+import { openModal } from 'bus/Modal/modalActions';
+import { isOpenedSelector, modalIdSelector } from 'bus/Modal/modalSelectors';
 
 const MainScreen = () => {
-  const { showAlert } = useContext(AlertContext);
-  const {
-    getEvents,
-    events,
-    updateEvent,
-    loading,
-    filteredEvents,
-  } = useContext(EventsContext);
-  const { isAdmin } = useContext(AuthContext);
-  const { openModal, isOpened, modalId } = useContext(ModalContext);
+  const dispatch = useDispatch();
+  const loading = useSelector(loadingSelector);
+  const events = useSelector(eventsSelector);
+  const filteredEvents = useSelector(filteredEventsSelector);
+  const isAdmin = useSelector(isAdminSelector);
+  const isOpened = useSelector(isOpenedSelector);
+  const modalId = useSelector(modalIdSelector);
+  const success = useSelector(successSelector);
+
   const [event, setEvent] = useState({});
   const eventDeleteHandler = (eventItem) => {
     setEvent(eventItem);
-    openModal(eventItem.id);
+    dispatch(openModal(eventItem.id));
+  };
+  const eventEditHandler = (eventItem) => {
+    dispatch(setCurrentEvent(eventItem));
+    setEvent(eventItem);
+    dispatch(openModal('js-edit-modal'));
   };
 
   useEffect(() => {
-    getEvents();
+    dispatch(getEvents());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(showAlert({ message: success, type: 'success' }));
+    }
+  }, [success]);
+
   return (
     <>
       <Table
@@ -37,6 +66,7 @@ const MainScreen = () => {
           filteredEvents,
           isAdmin,
           eventDeleteHandler,
+          eventEditHandler,
         }}
       />
       {isOpened && modalId === event.id && <ConfirmModal event={event} />}

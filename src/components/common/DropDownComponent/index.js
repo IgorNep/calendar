@@ -71,6 +71,7 @@ const DropDownCOmponent = ({
               key={user.id}
               user={user}
               onChangeHandler={onChangeCheckBoxHandler}
+              values={values}
             />
           ))}
         </div>
