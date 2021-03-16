@@ -32,12 +32,15 @@ const Table = ({
   };
   const eventsToRender = filteredEvents || events;
 
-  const dragHandler = (item, monitor, fieldId) => {
+  const dragHandler = (item, monitor, fieldMeta) => {
     const findEvent = events.find(
       (eventItem) => eventItem.fieldId === item.fieldId,
     );
     if (findEvent) {
-      findEvent.fieldId = fieldId;
+      findEvent.fieldId = fieldMeta.fieldId;
+      findEvent.time = fieldMeta.time;
+      findEvent.day = fieldMeta.day;
+      console.log('FIND!', findEvent);
     }
     // eslint-disable-next-line no-unused-expressions
     findEvent && dispatch(updateEvent(findEvent));
@@ -72,7 +75,12 @@ const Table = ({
                 {days.map((dayItem) => (
                   <TableCell
                     key={Math.random() * 100}
-                    fieldId={`${dayItem}${hour.substring(0, 2)}`}
+                    fieldMeta={{
+                      fieldId: `${dayItem}${hour.substring(0, 2)}`,
+                      time: hour,
+                      day: dayItem,
+                    }}
+                    // fieldId={`${dayItem}${hour.substring(0, 2)}`}
                     dragHandler={dragHandler}
                     events={eventsToRender}
                     globalEvents={events}
