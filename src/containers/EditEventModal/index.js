@@ -52,6 +52,7 @@ const EditEventModal = () => {
         day: currentEvent.day,
         time: currentEvent.time,
       };
+      setParticipantsArr(currentEvent.owner);
       setInitialValues(initialValues);
     }
   }, [currentEvent]);
@@ -67,7 +68,7 @@ const EditEventModal = () => {
         id: currentEvent.id,
       };
       const eventExist = events.find(
-        (item) => item.fieldId === newEvent.fieldId,
+        (item) => item.fieldId === newEvent.fieldId && item.id !== newEvent.id,
       );
       if (eventExist) {
         setAlert('Time Slot Already Reserved!');

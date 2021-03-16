@@ -40,7 +40,6 @@ const Table = ({
       findEvent.fieldId = fieldMeta.fieldId;
       findEvent.time = fieldMeta.time;
       findEvent.day = fieldMeta.day;
-      console.log('FIND!', findEvent);
     }
     // eslint-disable-next-line no-unused-expressions
     findEvent && dispatch(updateEvent(findEvent));

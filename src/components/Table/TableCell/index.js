@@ -10,7 +10,6 @@ const TableCell = ({
   children,
   dragHandler,
   fieldMeta,
-  //   fieldId,
   isAdmin,
   globalEvents,
 }) => {
