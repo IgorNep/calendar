@@ -11,6 +11,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useDispatch, useSelector } from 'react-redux';
 import { successSelector } from 'bus/events/eventsSelectors';
+import { fieldIdMaker } from 'utils/helpers/fieldIdMaker';
 import TableCell from './TableCell';
 
 const Table = ({
@@ -73,22 +74,19 @@ const Table = ({
                 <td>{hour}</td>
                 {days.map((dayItem) => (
                   <TableCell
-                    key={Math.random() * 100}
+                    key={fieldIdMaker(dayItem, hour)}
                     fieldMeta={{
-                      fieldId: `${dayItem}${hour.substring(0, 2)}`,
+                      fieldId: fieldIdMaker(dayItem, hour),
                       time: hour,
                       day: dayItem,
                     }}
-                    // fieldId={`${dayItem}${hour.substring(0, 2)}`}
                     dragHandler={dragHandler}
                     events={eventsToRender}
                     globalEvents={events}
                     isAdmin={isAdmin}
                   >
                     {eventsToRender.map((event) => {
-                      if (
-                        event.fieldId === `${dayItem}${hour.substring(0, 2)}`
-                      ) {
+                      if (event.fieldId === fieldIdMaker(dayItem, hour)) {
                         return (
                           <EventComponent
                             event={event}
